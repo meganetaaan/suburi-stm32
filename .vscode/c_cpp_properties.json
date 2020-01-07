@@ -1,0 +1,67 @@
+{
+    "configurations": [
+        {
+            "name": "!!! WARNING !!! AUTO-GENERATED FILE, PLEASE DO NOT MODIFY IT AND USE https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "/home/ishikawa/.ghq/github.com/meganetaaan/suburi-stm32/include",
+                "/home/ishikawa/.ghq/github.com/meganetaaan/suburi-stm32/src",
+                "/home/ishikawa/.ghq/github.com/meganetaaan/suburi-stm32/lib/stm32",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Include",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Device/ST/STM32F1xx/Include",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/STM32F1xx_HAL_Driver/Inc",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/Common",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/cs43l22",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/st7735",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/stmpe811",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/lis302dl",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ili9320",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ak4343",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/stlm75",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/spfd5408",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/hx8347d",
+                "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ili9325",
+                "/home/ishikawa/.platformio/packages/tool-unity",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/home/ishikawa/.ghq/github.com/meganetaaan/suburi-stm32/include",
+                    "/home/ishikawa/.ghq/github.com/meganetaaan/suburi-stm32/src",
+                    "/home/ishikawa/.ghq/github.com/meganetaaan/suburi-stm32/lib/stm32",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Include",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Device/ST/STM32F1xx/Include",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/STM32F1xx_HAL_Driver/Inc",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/Common",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/cs43l22",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/st7735",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/stmpe811",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/lis302dl",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ili9320",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ak4343",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/stlm75",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/spfd5408",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/hx8347d",
+                    "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ili9325",
+                    "/home/ishikawa/.platformio/packages/tool-unity",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=40100",
+                "STM32F1",
+                "STM32F103xB",
+                "ARDUINO_BLUEPILL_F103C8",
+                "USE_HAL_DRIVER",
+                "F_CPU=72000000L",
+                ""
+            ],
+            "intelliSenseMode": "clang-x64",
+            "compilerPath": "\"/home/ishikawa/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-gcc\" -mthumb -mcpu=cortex-m3"
+        }
+    ],
+    "version": 4
+}
