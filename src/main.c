@@ -58,6 +58,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+char *buf = "Hello World\n\r";
 
 /* USER CODE END 0 */
 
@@ -101,6 +102,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    HAL_Delay(1000);
+    CDC_Transmit_FS((uint8_t*)buf, strlen(buf));
+    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

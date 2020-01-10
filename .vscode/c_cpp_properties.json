@@ -6,6 +6,8 @@
         {
             "name": "Linux",
             "includePath": [
+                "/home/ishikawa/.ghq/github.com/meganetaaan/suburi-stm32/include",
+                "/home/ishikawa/.ghq/github.com/meganetaaan/suburi-stm32/src",
                 "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Include",
                 "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Device/ST/STM32F1xx/Include",
                 "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/STM32F1xx_HAL_Driver/Inc",
@@ -26,6 +28,8 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
+                    "/home/ishikawa/.ghq/github.com/meganetaaan/suburi-stm32/include",
+                    "/home/ishikawa/.ghq/github.com/meganetaaan/suburi-stm32/src",
                     "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Include",
                     "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Device/ST/STM32F1xx/Include",
                     "/home/ishikawa/.platformio/packages/framework-stm32cube/f1/Drivers/STM32F1xx_HAL_Driver/Inc",
