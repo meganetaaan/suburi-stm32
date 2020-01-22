@@ -5,6 +5,7 @@
         "usbd_core.h": "c",
         "usbd_desc.h": "c",
         "usbd_cdc.h": "c",
-        "usbd_cdc_if.h": "c"
+        "usbd_cdc_if.h": "c",
+        "typeinfo": "cpp"
     }
 }

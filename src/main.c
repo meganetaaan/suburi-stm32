@@ -59,7 +59,6 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-char *buf = "Hello World\n\r";
 
 /* USER CODE END 0 */
 
@@ -70,6 +69,8 @@ char *buf = "Hello World\n\r";
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  char usr_buf[1000];
+  sprintf(usr_buf, "Hello World\n\r");
 
   /* USER CODE END 1 */
   
@@ -97,8 +98,17 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
-  // 発光開始
+  uint16_t uhADCxConvertedValue = 0;
+
+  // Turn on LED
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+
+  // Start ADC
+  if (HAL_ADC_Start(&hadc2) != HAL_OK)
+  {
+    /* Start Conversation Error */
+    Error_Handler();
+  }
 
   /* USER CODE END 2 */
 
@@ -106,9 +116,24 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    HAL_Delay(1000);
-    CDC_Transmit_FS((uint8_t*)buf, strlen(buf));
+    HAL_Delay(100);
     HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+    HAL_StatusTypeDef status = HAL_ADC_PollForConversion(&hadc2, 1000);
+    if (status != HAL_OK)
+    {
+      sprintf(usr_buf, "Error: %d\n\r", status);
+      CDC_Transmit_FS((uint8_t *)usr_buf, strlen(usr_buf));
+      Error_Handler();
+    }
+    else
+    {
+      /* ADC conversion completed */
+      /*##-5- Get the converted value of regular channel  ######################*/
+      
+      uhADCxConvertedValue = HAL_ADC_GetValue(&hadc2);
+      sprintf(usr_buf, "Sensor: %d\n\r", uhADCxConvertedValue);
+      CDC_Transmit_FS((uint8_t *)usr_buf, strlen(usr_buf));
+    }
 
     /* USER CODE END WHILE */
 
