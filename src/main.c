@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "tim.h"
 #include "rtc.h"
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
@@ -55,6 +56,29 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
+int16_t get_encoder_value( void )
+{
+  uint16_t enc_buff = TIM1->CNT;
+
+  if( enc_buff > 32767 ){
+    return (int16_t)enc_buff * -1;
+  } else {
+    return (int16_t)enc_buff;
+  }
+}
+
+void reset_encoder_count( void )
+{
+  TIM1->CNT = 0;
+}
+
+int16_t count_encoder( void )
+{
+  int16_t count = get_encoder_value();
+  reset_encoder_count();
+  return count;
+}
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -71,6 +95,8 @@ int main(void)
   /* USER CODE BEGIN 1 */
   char usr_buf[1000];
   sprintf(usr_buf, "Hello World\n\r");
+
+  int16_t count = 0;
 
   /* USER CODE END 1 */
   
@@ -96,6 +122,7 @@ int main(void)
   MX_RTC_Init();
   MX_ADC2_Init();
   MX_USB_DEVICE_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
   uint16_t uhADCxConvertedValue = 0;
@@ -110,18 +137,22 @@ int main(void)
     Error_Handler();
   }
 
+  // Start Encoder
+  HAL_TIM_Encoder_Start( &htim1, TIM_CHANNEL_ALL ); // encoder start
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    HAL_Delay(100);
     HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+
+    // ADC
     HAL_StatusTypeDef status = HAL_ADC_PollForConversion(&hadc2, 1000);
     if (status != HAL_OK)
     {
-      sprintf(usr_buf, "Error: %d\n\r", status);
+      // sprintf(usr_buf, "Error: %d\n\r", status);
       CDC_Transmit_FS((uint8_t *)usr_buf, strlen(usr_buf));
       Error_Handler();
     }
@@ -131,9 +162,16 @@ int main(void)
       /*##-5- Get the converted value of regular channel  ######################*/
       
       uhADCxConvertedValue = HAL_ADC_GetValue(&hadc2);
-      sprintf(usr_buf, "Sensor: %d\n\r", uhADCxConvertedValue);
-      CDC_Transmit_FS((uint8_t *)usr_buf, strlen(usr_buf));
+      // sprintf(usr_buf, "Sensor: %d\n\r", uhADCxConvertedValue);
+      // CDC_Transmit_FS((uint8_t *)usr_buf, strlen(usr_buf));
     }
+
+    // Encoder
+    count += count_encoder();
+    sprintf(usr_buf, "Encoder: %d\n\r", count);
+
+    CDC_Transmit_FS((uint8_t *)usr_buf, strlen(usr_buf));
+    HAL_Delay(100);
 
     /* USER CODE END WHILE */
 
