@@ -1,0 +1,759 @@
+ARM GAS  /tmp/ccf6yvbR.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"main.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.get_encoder_value,"ax",%progbits
+  16              		.align	1
+  17              		.global	get_encoder_value
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	get_encoder_value:
+  24              	.LFB66:
+  25              		.file 1 "Core/Src/main.c"
+   1:Core/Src/main.c **** /* USER CODE BEGIN Header */
+   2:Core/Src/main.c **** /**
+   3:Core/Src/main.c ****   ******************************************************************************
+   4:Core/Src/main.c ****   * @file           : main.c
+   5:Core/Src/main.c ****   * @brief          : Main program body
+   6:Core/Src/main.c ****   ******************************************************************************
+   7:Core/Src/main.c ****   * @attention
+   8:Core/Src/main.c ****   *
+   9:Core/Src/main.c ****   * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  10:Core/Src/main.c ****   * All rights reserved.</center></h2>
+  11:Core/Src/main.c ****   *
+  12:Core/Src/main.c ****   * This software component is licensed by ST under BSD 3-Clause license,
+  13:Core/Src/main.c ****   * the "License"; You may not use this file except in compliance with the
+  14:Core/Src/main.c ****   * License. You may obtain a copy of the License at:
+  15:Core/Src/main.c ****   *                        opensource.org/licenses/BSD-3-Clause
+  16:Core/Src/main.c ****   *
+  17:Core/Src/main.c ****   ******************************************************************************
+  18:Core/Src/main.c ****   */
+  19:Core/Src/main.c **** /* USER CODE END Header */
+  20:Core/Src/main.c **** 
+  21:Core/Src/main.c **** /* Includes ------------------------------------------------------------------*/
+  22:Core/Src/main.c **** #include "main.h"
+  23:Core/Src/main.c **** #include "adc.h"
+  24:Core/Src/main.c **** #include "rtc.h"
+  25:Core/Src/main.c **** #include "tim.h"
+  26:Core/Src/main.c **** #include "usb_device.h"
+  27:Core/Src/main.c **** #include "usbd_cdc_if.h"
+  28:Core/Src/main.c **** #include "gpio.h"
+  29:Core/Src/main.c **** 
+  30:Core/Src/main.c **** /* Private includes ----------------------------------------------------------*/
+  31:Core/Src/main.c **** /* USER CODE BEGIN Includes */
+  32:Core/Src/main.c **** 
+  33:Core/Src/main.c **** /* USER CODE END Includes */
+ARM GAS  /tmp/ccf6yvbR.s 			page 2
+
+
+  34:Core/Src/main.c **** 
+  35:Core/Src/main.c **** /* Private typedef -----------------------------------------------------------*/
+  36:Core/Src/main.c **** /* USER CODE BEGIN PTD */
+  37:Core/Src/main.c **** 
+  38:Core/Src/main.c **** /* USER CODE END PTD */
+  39:Core/Src/main.c **** 
+  40:Core/Src/main.c **** /* Private define ------------------------------------------------------------*/
+  41:Core/Src/main.c **** /* USER CODE BEGIN PD */
+  42:Core/Src/main.c **** /* USER CODE END PD */
+  43:Core/Src/main.c **** 
+  44:Core/Src/main.c **** /* Private macro -------------------------------------------------------------*/
+  45:Core/Src/main.c **** /* USER CODE BEGIN PM */
+  46:Core/Src/main.c **** 
+  47:Core/Src/main.c **** /* USER CODE END PM */
+  48:Core/Src/main.c **** 
+  49:Core/Src/main.c **** /* Private variables ---------------------------------------------------------*/
+  50:Core/Src/main.c **** 
+  51:Core/Src/main.c **** /* USER CODE BEGIN PV */
+  52:Core/Src/main.c **** 
+  53:Core/Src/main.c **** /* USER CODE END PV */
+  54:Core/Src/main.c **** 
+  55:Core/Src/main.c **** /* Private function prototypes -----------------------------------------------*/
+  56:Core/Src/main.c **** void SystemClock_Config(void);
+  57:Core/Src/main.c **** /* USER CODE BEGIN PFP */
+  58:Core/Src/main.c **** 
+  59:Core/Src/main.c **** int16_t get_encoder_value( void )
+  60:Core/Src/main.c **** {
+  26              		.loc 1 60 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  61:Core/Src/main.c ****   uint16_t enc_buff = TIM1->CNT;
+  31              		.loc 1 61 0
+  32 0000 044B     		ldr	r3, .L5
+  33 0002 586A     		ldr	r0, [r3, #36]
+  34 0004 83B2     		uxth	r3, r0
+  35              	.LVL0:
+  62:Core/Src/main.c **** 
+  63:Core/Src/main.c ****   if( enc_buff > 32767 ){
+  36              		.loc 1 63 0
+  37 0006 00B2     		sxth	r0, r0
+  38 0008 0028     		cmp	r0, #0
+  39 000a 00DB     		blt	.L4
+  40              	.L2:
+  64:Core/Src/main.c ****     return (int16_t)enc_buff * -1;
+  65:Core/Src/main.c ****   } else {
+  66:Core/Src/main.c ****     return (int16_t)enc_buff;
+  67:Core/Src/main.c ****   }
+  68:Core/Src/main.c **** }
+  41              		.loc 1 68 0
+  42 000c 7047     		bx	lr
+  43              	.L4:
+  64:Core/Src/main.c ****     return (int16_t)enc_buff * -1;
+  44              		.loc 1 64 0
+  45 000e 5842     		negs	r0, r3
+  46 0010 00B2     		sxth	r0, r0
+ARM GAS  /tmp/ccf6yvbR.s 			page 3
+
+
+  47 0012 FBE7     		b	.L2
+  48              	.L6:
+  49              		.align	2
+  50              	.L5:
+  51 0014 002C0140 		.word	1073818624
+  52              		.cfi_endproc
+  53              	.LFE66:
+  55              		.section	.text.reset_encoder_count,"ax",%progbits
+  56              		.align	1
+  57              		.global	reset_encoder_count
+  58              		.syntax unified
+  59              		.thumb
+  60              		.thumb_func
+  61              		.fpu softvfp
+  63              	reset_encoder_count:
+  64              	.LFB67:
+  69:Core/Src/main.c **** 
+  70:Core/Src/main.c **** void reset_encoder_count( void )
+  71:Core/Src/main.c **** {
+  65              		.loc 1 71 0
+  66              		.cfi_startproc
+  67              		@ args = 0, pretend = 0, frame = 0
+  68              		@ frame_needed = 0, uses_anonymous_args = 0
+  69              		@ link register save eliminated.
+  72:Core/Src/main.c ****   TIM1->CNT = 0;
+  70              		.loc 1 72 0
+  71 0000 0022     		movs	r2, #0
+  72 0002 014B     		ldr	r3, .L8
+  73 0004 5A62     		str	r2, [r3, #36]
+  74 0006 7047     		bx	lr
+  75              	.L9:
+  76              		.align	2
+  77              	.L8:
+  78 0008 002C0140 		.word	1073818624
+  79              		.cfi_endproc
+  80              	.LFE67:
+  82              		.section	.text.count_encoder,"ax",%progbits
+  83              		.align	1
+  84              		.global	count_encoder
+  85              		.syntax unified
+  86              		.thumb
+  87              		.thumb_func
+  88              		.fpu softvfp
+  90              	count_encoder:
+  91              	.LFB68:
+  73:Core/Src/main.c **** }
+  74:Core/Src/main.c **** 
+  75:Core/Src/main.c **** int16_t count_encoder( void )
+  76:Core/Src/main.c **** {
+  92              		.loc 1 76 0
+  93              		.cfi_startproc
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 0, uses_anonymous_args = 0
+  96 0000 10B5     		push	{r4, lr}
+  97              	.LCFI0:
+  98              		.cfi_def_cfa_offset 8
+  99              		.cfi_offset 4, -8
+ARM GAS  /tmp/ccf6yvbR.s 			page 4
+
+
+ 100              		.cfi_offset 14, -4
+  77:Core/Src/main.c ****   int16_t count = get_encoder_value();
+ 101              		.loc 1 77 0
+ 102 0002 FFF7FEFF 		bl	get_encoder_value
+ 103              	.LVL1:
+ 104 0006 0446     		mov	r4, r0
+ 105              	.LVL2:
+  78:Core/Src/main.c ****   reset_encoder_count();
+ 106              		.loc 1 78 0
+ 107 0008 FFF7FEFF 		bl	reset_encoder_count
+ 108              	.LVL3:
+  79:Core/Src/main.c ****   return count;
+  80:Core/Src/main.c **** }
+ 109              		.loc 1 80 0
+ 110 000c 2046     		mov	r0, r4
+ 111 000e 10BD     		pop	{r4, pc}
+ 112              		.cfi_endproc
+ 113              	.LFE68:
+ 115              		.section	.text.SystemClock_Config,"ax",%progbits
+ 116              		.align	1
+ 117              		.global	SystemClock_Config
+ 118              		.syntax unified
+ 119              		.thumb
+ 120              		.thumb_func
+ 121              		.fpu softvfp
+ 123              	SystemClock_Config:
+ 124              	.LFB70:
+  81:Core/Src/main.c **** 
+  82:Core/Src/main.c **** 
+  83:Core/Src/main.c **** /* USER CODE END PFP */
+  84:Core/Src/main.c **** 
+  85:Core/Src/main.c **** /* Private user code ---------------------------------------------------------*/
+  86:Core/Src/main.c **** /* USER CODE BEGIN 0 */
+  87:Core/Src/main.c **** 
+  88:Core/Src/main.c **** /* USER CODE END 0 */
+  89:Core/Src/main.c **** 
+  90:Core/Src/main.c **** /**
+  91:Core/Src/main.c ****   * @brief  The application entry point.
+  92:Core/Src/main.c ****   * @retval int
+  93:Core/Src/main.c ****   */
+  94:Core/Src/main.c **** int main(void)
+  95:Core/Src/main.c **** {
+  96:Core/Src/main.c ****   /* USER CODE BEGIN 1 */
+  97:Core/Src/main.c ****   char usr_buf[1000];
+  98:Core/Src/main.c ****   sprintf(usr_buf, "Hello World\n\r");
+  99:Core/Src/main.c **** 
+ 100:Core/Src/main.c ****   int16_t count = 0;
+ 101:Core/Src/main.c **** 
+ 102:Core/Src/main.c ****   /* USER CODE END 1 */
+ 103:Core/Src/main.c ****   
+ 104:Core/Src/main.c **** 
+ 105:Core/Src/main.c ****   /* MCU Configuration--------------------------------------------------------*/
+ 106:Core/Src/main.c **** 
+ 107:Core/Src/main.c ****   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+ 108:Core/Src/main.c ****   HAL_Init();
+ 109:Core/Src/main.c **** 
+ 110:Core/Src/main.c ****   /* USER CODE BEGIN Init */
+ARM GAS  /tmp/ccf6yvbR.s 			page 5
+
+
+ 111:Core/Src/main.c **** 
+ 112:Core/Src/main.c ****   /* USER CODE END Init */
+ 113:Core/Src/main.c **** 
+ 114:Core/Src/main.c ****   /* Configure the system clock */
+ 115:Core/Src/main.c ****   SystemClock_Config();
+ 116:Core/Src/main.c **** 
+ 117:Core/Src/main.c ****   /* USER CODE BEGIN SysInit */
+ 118:Core/Src/main.c **** 
+ 119:Core/Src/main.c ****   /* USER CODE END SysInit */
+ 120:Core/Src/main.c **** 
+ 121:Core/Src/main.c ****   /* Initialize all configured peripherals */
+ 122:Core/Src/main.c ****   MX_GPIO_Init();
+ 123:Core/Src/main.c ****   MX_RTC_Init();
+ 124:Core/Src/main.c ****   MX_ADC2_Init();
+ 125:Core/Src/main.c ****   MX_USB_DEVICE_Init();
+ 126:Core/Src/main.c ****   MX_TIM1_Init();
+ 127:Core/Src/main.c ****   /* USER CODE BEGIN 2 */
+ 128:Core/Src/main.c **** 
+ 129:Core/Src/main.c ****   uint16_t uhADCxConvertedValue = 0;
+ 130:Core/Src/main.c **** 
+ 131:Core/Src/main.c ****   // Turn on LED
+ 132:Core/Src/main.c ****   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+ 133:Core/Src/main.c **** 
+ 134:Core/Src/main.c ****   // Start ADC
+ 135:Core/Src/main.c ****   if (HAL_ADC_Start(&hadc2) != HAL_OK)
+ 136:Core/Src/main.c ****   {
+ 137:Core/Src/main.c ****     /* Start Conversation Error */
+ 138:Core/Src/main.c ****     Error_Handler();
+ 139:Core/Src/main.c ****   }
+ 140:Core/Src/main.c **** 
+ 141:Core/Src/main.c ****   // Start Encoder
+ 142:Core/Src/main.c ****   HAL_TIM_Encoder_Start( &htim1, TIM_CHANNEL_ALL ); // encoder start
+ 143:Core/Src/main.c **** 
+ 144:Core/Src/main.c ****   /* USER CODE END 2 */
+ 145:Core/Src/main.c **** 
+ 146:Core/Src/main.c ****   /* Infinite loop */
+ 147:Core/Src/main.c ****   /* USER CODE BEGIN WHILE */
+ 148:Core/Src/main.c ****   while (1)
+ 149:Core/Src/main.c ****   {
+ 150:Core/Src/main.c ****     HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+ 151:Core/Src/main.c **** 
+ 152:Core/Src/main.c ****     // ADC
+ 153:Core/Src/main.c ****     HAL_StatusTypeDef status = HAL_ADC_PollForConversion(&hadc2, 1000);
+ 154:Core/Src/main.c ****     if (status != HAL_OK)
+ 155:Core/Src/main.c ****     {
+ 156:Core/Src/main.c ****       // sprintf(usr_buf, "Error: %d\n\r", status);
+ 157:Core/Src/main.c ****       CDC_Transmit_FS((uint8_t *)usr_buf, strlen(usr_buf));
+ 158:Core/Src/main.c ****       Error_Handler();
+ 159:Core/Src/main.c ****     }
+ 160:Core/Src/main.c ****     else
+ 161:Core/Src/main.c ****     {
+ 162:Core/Src/main.c ****       /* ADC conversion completed */
+ 163:Core/Src/main.c ****       /*##-5- Get the converted value of regular channel  ######################*/
+ 164:Core/Src/main.c ****       
+ 165:Core/Src/main.c ****       uhADCxConvertedValue = HAL_ADC_GetValue(&hadc2);
+ 166:Core/Src/main.c ****       // sprintf(usr_buf, "Sensor: %d\n\r", uhADCxConvertedValue);
+ 167:Core/Src/main.c ****       // CDC_Transmit_FS((uint8_t *)usr_buf, strlen(usr_buf));
+ARM GAS  /tmp/ccf6yvbR.s 			page 6
+
+
+ 168:Core/Src/main.c ****     }
+ 169:Core/Src/main.c **** 
+ 170:Core/Src/main.c ****     // Encoder
+ 171:Core/Src/main.c ****     count += count_encoder();
+ 172:Core/Src/main.c ****     sprintf(usr_buf, "Encoder: %d\n\r", count);
+ 173:Core/Src/main.c **** 
+ 174:Core/Src/main.c ****     CDC_Transmit_FS((uint8_t *)usr_buf, strlen(usr_buf));
+ 175:Core/Src/main.c ****     HAL_Delay(100);
+ 176:Core/Src/main.c **** 
+ 177:Core/Src/main.c ****     /* USER CODE END WHILE */
+ 178:Core/Src/main.c **** 
+ 179:Core/Src/main.c ****     /* USER CODE BEGIN 3 */
+ 180:Core/Src/main.c ****   }
+ 181:Core/Src/main.c ****   /* USER CODE END 3 */
+ 182:Core/Src/main.c **** }
+ 183:Core/Src/main.c **** 
+ 184:Core/Src/main.c **** /**
+ 185:Core/Src/main.c ****   * @brief System Clock Configuration
+ 186:Core/Src/main.c ****   * @retval None
+ 187:Core/Src/main.c ****   */
+ 188:Core/Src/main.c **** void SystemClock_Config(void)
+ 189:Core/Src/main.c **** {
+ 125              		.loc 1 189 0
+ 126              		.cfi_startproc
+ 127              		@ args = 0, pretend = 0, frame = 80
+ 128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 129 0000 70B5     		push	{r4, r5, r6, lr}
+ 130              	.LCFI1:
+ 131              		.cfi_def_cfa_offset 16
+ 132              		.cfi_offset 4, -16
+ 133              		.cfi_offset 5, -12
+ 134              		.cfi_offset 6, -8
+ 135              		.cfi_offset 14, -4
+ 136 0002 94B0     		sub	sp, sp, #80
+ 137              	.LCFI2:
+ 138              		.cfi_def_cfa_offset 96
+ 190:Core/Src/main.c ****   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+ 139              		.loc 1 190 0
+ 140 0004 2822     		movs	r2, #40
+ 141 0006 0021     		movs	r1, #0
+ 142 0008 0DEB0200 		add	r0, sp, r2
+ 143 000c FFF7FEFF 		bl	memset
+ 144              	.LVL4:
+ 191:Core/Src/main.c ****   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+ 145              		.loc 1 191 0
+ 146 0010 0024     		movs	r4, #0
+ 147 0012 0594     		str	r4, [sp, #20]
+ 148 0014 0694     		str	r4, [sp, #24]
+ 149 0016 0794     		str	r4, [sp, #28]
+ 150 0018 0894     		str	r4, [sp, #32]
+ 151 001a 0994     		str	r4, [sp, #36]
+ 192:Core/Src/main.c ****   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+ 152              		.loc 1 192 0
+ 153 001c 0194     		str	r4, [sp, #4]
+ 154 001e 0294     		str	r4, [sp, #8]
+ 155 0020 0394     		str	r4, [sp, #12]
+ 156 0022 0494     		str	r4, [sp, #16]
+ARM GAS  /tmp/ccf6yvbR.s 			page 7
+
+
+ 193:Core/Src/main.c **** 
+ 194:Core/Src/main.c ****   /** Initializes the CPU, AHB and APB busses clocks 
+ 195:Core/Src/main.c ****   */
+ 196:Core/Src/main.c ****   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE|RCC_OSCILLATORTYPE_LSE;
+ 157              		.loc 1 196 0
+ 158 0024 0523     		movs	r3, #5
+ 159 0026 0A93     		str	r3, [sp, #40]
+ 197:Core/Src/main.c ****   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+ 160              		.loc 1 197 0
+ 161 0028 4FF48033 		mov	r3, #65536
+ 162 002c 0B93     		str	r3, [sp, #44]
+ 198:Core/Src/main.c ****   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+ 199:Core/Src/main.c ****   RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+ 163              		.loc 1 199 0
+ 164 002e 0125     		movs	r5, #1
+ 165 0030 0D95     		str	r5, [sp, #52]
+ 200:Core/Src/main.c ****   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+ 166              		.loc 1 200 0
+ 167 0032 0E95     		str	r5, [sp, #56]
+ 201:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+ 168              		.loc 1 201 0
+ 169 0034 0226     		movs	r6, #2
+ 170 0036 1196     		str	r6, [sp, #68]
+ 202:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+ 171              		.loc 1 202 0
+ 172 0038 1293     		str	r3, [sp, #72]
+ 203:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL6;
+ 173              		.loc 1 203 0
+ 174 003a 4FF48013 		mov	r3, #1048576
+ 175 003e 1393     		str	r3, [sp, #76]
+ 204:Core/Src/main.c ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+ 176              		.loc 1 204 0
+ 177 0040 0AA8     		add	r0, sp, #40
+ 178 0042 FFF7FEFF 		bl	HAL_RCC_OscConfig
+ 179              	.LVL5:
+ 205:Core/Src/main.c ****   {
+ 206:Core/Src/main.c ****     Error_Handler();
+ 207:Core/Src/main.c ****   }
+ 208:Core/Src/main.c ****   /** Initializes the CPU, AHB and APB busses clocks 
+ 209:Core/Src/main.c ****   */
+ 210:Core/Src/main.c ****   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+ 180              		.loc 1 210 0
+ 181 0046 0F23     		movs	r3, #15
+ 182 0048 0593     		str	r3, [sp, #20]
+ 211:Core/Src/main.c ****                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+ 212:Core/Src/main.c ****   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+ 183              		.loc 1 212 0
+ 184 004a 0696     		str	r6, [sp, #24]
+ 213:Core/Src/main.c ****   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+ 185              		.loc 1 213 0
+ 186 004c 0794     		str	r4, [sp, #28]
+ 214:Core/Src/main.c ****   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+ 187              		.loc 1 214 0
+ 188 004e 4FF48063 		mov	r3, #1024
+ 189 0052 0893     		str	r3, [sp, #32]
+ 215:Core/Src/main.c ****   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+ 190              		.loc 1 215 0
+ARM GAS  /tmp/ccf6yvbR.s 			page 8
+
+
+ 191 0054 0994     		str	r4, [sp, #36]
+ 216:Core/Src/main.c **** 
+ 217:Core/Src/main.c ****   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+ 192              		.loc 1 217 0
+ 193 0056 2946     		mov	r1, r5
+ 194 0058 05A8     		add	r0, sp, #20
+ 195 005a FFF7FEFF 		bl	HAL_RCC_ClockConfig
+ 196              	.LVL6:
+ 218:Core/Src/main.c ****   {
+ 219:Core/Src/main.c ****     Error_Handler();
+ 220:Core/Src/main.c ****   }
+ 221:Core/Src/main.c ****   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC|RCC_PERIPHCLK_ADC
+ 197              		.loc 1 221 0
+ 198 005e 1323     		movs	r3, #19
+ 199 0060 0193     		str	r3, [sp, #4]
+ 222:Core/Src/main.c ****                               |RCC_PERIPHCLK_USB;
+ 223:Core/Src/main.c ****   PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
+ 200              		.loc 1 223 0
+ 201 0062 4FF48073 		mov	r3, #256
+ 202 0066 0293     		str	r3, [sp, #8]
+ 224:Core/Src/main.c ****   PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV4;
+ 203              		.loc 1 224 0
+ 204 0068 4FF48043 		mov	r3, #16384
+ 205 006c 0393     		str	r3, [sp, #12]
+ 225:Core/Src/main.c ****   PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL;
+ 206              		.loc 1 225 0
+ 207 006e 4FF48003 		mov	r3, #4194304
+ 208 0072 0493     		str	r3, [sp, #16]
+ 226:Core/Src/main.c ****   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+ 209              		.loc 1 226 0
+ 210 0074 01A8     		add	r0, sp, #4
+ 211 0076 FFF7FEFF 		bl	HAL_RCCEx_PeriphCLKConfig
+ 212              	.LVL7:
+ 227:Core/Src/main.c ****   {
+ 228:Core/Src/main.c ****     Error_Handler();
+ 229:Core/Src/main.c ****   }
+ 230:Core/Src/main.c **** }
+ 213              		.loc 1 230 0
+ 214 007a 14B0     		add	sp, sp, #80
+ 215              	.LCFI3:
+ 216              		.cfi_def_cfa_offset 16
+ 217              		@ sp needed
+ 218 007c 70BD     		pop	{r4, r5, r6, pc}
+ 219              		.cfi_endproc
+ 220              	.LFE70:
+ 222              		.section	.text.main,"ax",%progbits
+ 223              		.align	1
+ 224              		.global	main
+ 225              		.syntax unified
+ 226              		.thumb
+ 227              		.thumb_func
+ 228              		.fpu softvfp
+ 230              	main:
+ 231              	.LFB69:
+  95:Core/Src/main.c ****   /* USER CODE BEGIN 1 */
+ 232              		.loc 1 95 0
+ 233              		.cfi_startproc
+ARM GAS  /tmp/ccf6yvbR.s 			page 9
+
+
+ 234              		@ args = 0, pretend = 0, frame = 1000
+ 235              		@ frame_needed = 0, uses_anonymous_args = 0
+ 236 0000 10B5     		push	{r4, lr}
+ 237              	.LCFI4:
+ 238              		.cfi_def_cfa_offset 8
+ 239              		.cfi_offset 4, -8
+ 240              		.cfi_offset 14, -4
+ 241 0002 ADF57A7D 		sub	sp, sp, #1000
+ 242              	.LCFI5:
+ 243              		.cfi_def_cfa_offset 1008
+  98:Core/Src/main.c **** 
+ 244              		.loc 1 98 0
+ 245 0006 264B     		ldr	r3, .L19
+ 246 0008 6C46     		mov	r4, sp
+ 247 000a 0FCB     		ldm	r3, {r0, r1, r2, r3}
+ 248 000c 07C4     		stmia	r4!, {r0, r1, r2}
+ 249 000e 2380     		strh	r3, [r4]	@ movhi
+ 250              	.LVL8:
+ 108:Core/Src/main.c **** 
+ 251              		.loc 1 108 0
+ 252 0010 FFF7FEFF 		bl	HAL_Init
+ 253              	.LVL9:
+ 115:Core/Src/main.c **** 
+ 254              		.loc 1 115 0
+ 255 0014 FFF7FEFF 		bl	SystemClock_Config
+ 256              	.LVL10:
+ 122:Core/Src/main.c ****   MX_RTC_Init();
+ 257              		.loc 1 122 0
+ 258 0018 FFF7FEFF 		bl	MX_GPIO_Init
+ 259              	.LVL11:
+ 123:Core/Src/main.c ****   MX_ADC2_Init();
+ 260              		.loc 1 123 0
+ 261 001c FFF7FEFF 		bl	MX_RTC_Init
+ 262              	.LVL12:
+ 124:Core/Src/main.c ****   MX_USB_DEVICE_Init();
+ 263              		.loc 1 124 0
+ 264 0020 FFF7FEFF 		bl	MX_ADC2_Init
+ 265              	.LVL13:
+ 125:Core/Src/main.c ****   MX_TIM1_Init();
+ 266              		.loc 1 125 0
+ 267 0024 FFF7FEFF 		bl	MX_USB_DEVICE_Init
+ 268              	.LVL14:
+ 126:Core/Src/main.c ****   /* USER CODE BEGIN 2 */
+ 269              		.loc 1 126 0
+ 270 0028 FFF7FEFF 		bl	MX_TIM1_Init
+ 271              	.LVL15:
+ 132:Core/Src/main.c **** 
+ 272              		.loc 1 132 0
+ 273 002c 0122     		movs	r2, #1
+ 274 002e 4FF48071 		mov	r1, #256
+ 275 0032 1C48     		ldr	r0, .L19+4
+ 276 0034 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 277              	.LVL16:
+ 135:Core/Src/main.c ****   {
+ 278              		.loc 1 135 0
+ 279 0038 1B48     		ldr	r0, .L19+8
+ 280 003a FFF7FEFF 		bl	HAL_ADC_Start
+ARM GAS  /tmp/ccf6yvbR.s 			page 10
+
+
+ 281              	.LVL17:
+ 142:Core/Src/main.c **** 
+ 282              		.loc 1 142 0
+ 283 003e 3C21     		movs	r1, #60
+ 284 0040 1A48     		ldr	r0, .L19+12
+ 285 0042 FFF7FEFF 		bl	HAL_TIM_Encoder_Start
+ 286              	.LVL18:
+ 100:Core/Src/main.c **** 
+ 287              		.loc 1 100 0
+ 288 0046 0024     		movs	r4, #0
+ 289 0048 16E0     		b	.L17
+ 290              	.LVL19:
+ 291              	.L15:
+ 292              	.LBB2:
+ 165:Core/Src/main.c ****       // sprintf(usr_buf, "Sensor: %d\n\r", uhADCxConvertedValue);
+ 293              		.loc 1 165 0
+ 294 004a 1748     		ldr	r0, .L19+8
+ 295              	.LVL20:
+ 296 004c FFF7FEFF 		bl	HAL_ADC_GetValue
+ 297              	.LVL21:
+ 298              	.L16:
+ 171:Core/Src/main.c ****     sprintf(usr_buf, "Encoder: %d\n\r", count);
+ 299              		.loc 1 171 0
+ 300 0050 FFF7FEFF 		bl	count_encoder
+ 301              	.LVL22:
+ 302 0054 80B2     		uxth	r0, r0
+ 303 0056 0444     		add	r4, r4, r0
+ 304              	.LVL23:
+ 305 0058 24B2     		sxth	r4, r4
+ 306              	.LVL24:
+ 172:Core/Src/main.c **** 
+ 307              		.loc 1 172 0
+ 308 005a 2246     		mov	r2, r4
+ 309 005c 1449     		ldr	r1, .L19+16
+ 310 005e 6846     		mov	r0, sp
+ 311 0060 FFF7FEFF 		bl	sprintf
+ 312              	.LVL25:
+ 174:Core/Src/main.c ****     HAL_Delay(100);
+ 313              		.loc 1 174 0
+ 314 0064 6846     		mov	r0, sp
+ 315 0066 FFF7FEFF 		bl	strlen
+ 316              	.LVL26:
+ 317 006a 81B2     		uxth	r1, r0
+ 318 006c 6846     		mov	r0, sp
+ 319 006e FFF7FEFF 		bl	CDC_Transmit_FS
+ 320              	.LVL27:
+ 175:Core/Src/main.c **** 
+ 321              		.loc 1 175 0
+ 322 0072 6420     		movs	r0, #100
+ 323 0074 FFF7FEFF 		bl	HAL_Delay
+ 324              	.LVL28:
+ 325              	.L17:
+ 150:Core/Src/main.c **** 
+ 326              		.loc 1 150 0
+ 327 0078 4FF40051 		mov	r1, #8192
+ 328 007c 0D48     		ldr	r0, .L19+20
+ 329 007e FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ARM GAS  /tmp/ccf6yvbR.s 			page 11
+
+
+ 330              	.LVL29:
+ 153:Core/Src/main.c ****     if (status != HAL_OK)
+ 331              		.loc 1 153 0
+ 332 0082 4FF47A71 		mov	r1, #1000
+ 333 0086 0848     		ldr	r0, .L19+8
+ 334 0088 FFF7FEFF 		bl	HAL_ADC_PollForConversion
+ 335              	.LVL30:
+ 154:Core/Src/main.c ****     {
+ 336              		.loc 1 154 0
+ 337 008c 0028     		cmp	r0, #0
+ 338 008e DCD0     		beq	.L15
+ 157:Core/Src/main.c ****       Error_Handler();
+ 339              		.loc 1 157 0
+ 340 0090 6846     		mov	r0, sp
+ 341              	.LVL31:
+ 342 0092 FFF7FEFF 		bl	strlen
+ 343              	.LVL32:
+ 344 0096 81B2     		uxth	r1, r0
+ 345 0098 6846     		mov	r0, sp
+ 346 009a FFF7FEFF 		bl	CDC_Transmit_FS
+ 347              	.LVL33:
+ 348 009e D7E7     		b	.L16
+ 349              	.L20:
+ 350              		.align	2
+ 351              	.L19:
+ 352 00a0 00000000 		.word	.LC0
+ 353 00a4 00080140 		.word	1073809408
+ 354 00a8 00000000 		.word	hadc2
+ 355 00ac 00000000 		.word	htim1
+ 356 00b0 10000000 		.word	.LC1
+ 357 00b4 00100140 		.word	1073811456
+ 358              	.LBE2:
+ 359              		.cfi_endproc
+ 360              	.LFE69:
+ 362              		.section	.text.Error_Handler,"ax",%progbits
+ 363              		.align	1
+ 364              		.global	Error_Handler
+ 365              		.syntax unified
+ 366              		.thumb
+ 367              		.thumb_func
+ 368              		.fpu softvfp
+ 370              	Error_Handler:
+ 371              	.LFB71:
+ 231:Core/Src/main.c **** 
+ 232:Core/Src/main.c **** /* USER CODE BEGIN 4 */
+ 233:Core/Src/main.c **** 
+ 234:Core/Src/main.c **** /* USER CODE END 4 */
+ 235:Core/Src/main.c **** 
+ 236:Core/Src/main.c **** /**
+ 237:Core/Src/main.c ****   * @brief  This function is executed in case of error occurrence.
+ 238:Core/Src/main.c ****   * @retval None
+ 239:Core/Src/main.c ****   */
+ 240:Core/Src/main.c **** void Error_Handler(void)
+ 241:Core/Src/main.c **** {
+ 372              		.loc 1 241 0
+ 373              		.cfi_startproc
+ 374              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccf6yvbR.s 			page 12
+
+
+ 375              		@ frame_needed = 0, uses_anonymous_args = 0
+ 376              		@ link register save eliminated.
+ 377 0000 7047     		bx	lr
+ 378              		.cfi_endproc
+ 379              	.LFE71:
+ 381              		.section	.rodata.main.str1.4,"aMS",%progbits,1
+ 382              		.align	2
+ 383              	.LC0:
+ 384 0000 48656C6C 		.ascii	"Hello World\012\015\000"
+ 384      6F20576F 
+ 384      726C640A 
+ 384      0D00
+ 385 000e 0000     		.space	2
+ 386              	.LC1:
+ 387 0010 456E636F 		.ascii	"Encoder: %d\012\015\000"
+ 387      6465723A 
+ 387      2025640A 
+ 387      0D00
+ 388              		.text
+ 389              	.Letext0:
+ 390              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 391              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 392              		.file 4 "Drivers/CMSIS/Include/core_cm3.h"
+ 393              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h"
+ 394              		.file 6 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 395              		.file 7 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h"
+ 396              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 397              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h"
+ 398              		.file 10 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h"
+ 399              		.file 11 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 400              		.file 12 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 401              		.file 13 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc.h"
+ 402              		.file 14 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rtc.h"
+ 403              		.file 15 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h"
+ 404              		.file 16 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
+ 405              		.file 17 "Core/Inc/adc.h"
+ 406              		.file 18 "Core/Inc/rtc.h"
+ 407              		.file 19 "Core/Inc/tim.h"
+ 408              		.file 20 "/usr/include/newlib/sys/lock.h"
+ 409              		.file 21 "/usr/include/newlib/sys/_types.h"
+ 410              		.file 22 "/usr/lib/gcc/arm-none-eabi/6.3.1/include/stddef.h"
+ 411              		.file 23 "/usr/include/newlib/sys/reent.h"
+ 412              		.file 24 "/usr/include/newlib/stdlib.h"
+ 413              		.file 25 "Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h"
+ 414              		.file 26 "Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h"
+ 415              		.file 27 "USB_DEVICE/App/usbd_cdc_if.h"
+ 416              		.file 28 "/usr/include/newlib/stdio.h"
+ 417              		.file 29 "/usr/include/newlib/string.h"
+ 418              		.file 30 "Core/Inc/gpio.h"
+ 419              		.file 31 "USB_DEVICE/App/usb_device.h"
+ARM GAS  /tmp/ccf6yvbR.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccf6yvbR.s:16     .text.get_encoder_value:0000000000000000 $t
+     /tmp/ccf6yvbR.s:23     .text.get_encoder_value:0000000000000000 get_encoder_value
+     /tmp/ccf6yvbR.s:51     .text.get_encoder_value:0000000000000014 $d
+     /tmp/ccf6yvbR.s:56     .text.reset_encoder_count:0000000000000000 $t
+     /tmp/ccf6yvbR.s:63     .text.reset_encoder_count:0000000000000000 reset_encoder_count
+     /tmp/ccf6yvbR.s:78     .text.reset_encoder_count:0000000000000008 $d
+     /tmp/ccf6yvbR.s:83     .text.count_encoder:0000000000000000 $t
+     /tmp/ccf6yvbR.s:90     .text.count_encoder:0000000000000000 count_encoder
+     /tmp/ccf6yvbR.s:116    .text.SystemClock_Config:0000000000000000 $t
+     /tmp/ccf6yvbR.s:123    .text.SystemClock_Config:0000000000000000 SystemClock_Config
+     /tmp/ccf6yvbR.s:223    .text.main:0000000000000000 $t
+     /tmp/ccf6yvbR.s:230    .text.main:0000000000000000 main
+     /tmp/ccf6yvbR.s:352    .text.main:00000000000000a0 $d
+     /tmp/ccf6yvbR.s:363    .text.Error_Handler:0000000000000000 $t
+     /tmp/ccf6yvbR.s:370    .text.Error_Handler:0000000000000000 Error_Handler
+     /tmp/ccf6yvbR.s:382    .rodata.main.str1.4:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+memset
+HAL_RCC_OscConfig
+HAL_RCC_ClockConfig
+HAL_RCCEx_PeriphCLKConfig
+HAL_Init
+MX_GPIO_Init
+MX_RTC_Init
+MX_ADC2_Init
+MX_USB_DEVICE_Init
+MX_TIM1_Init
+HAL_GPIO_WritePin
+HAL_ADC_Start
+HAL_TIM_Encoder_Start
+HAL_ADC_GetValue
+sprintf
+strlen
+CDC_Transmit_FS
+HAL_Delay
+HAL_GPIO_TogglePin
+HAL_ADC_PollForConversion
+hadc2
+htim1
